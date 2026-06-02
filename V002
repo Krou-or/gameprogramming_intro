@@ -1,0 +1,11 @@
+import time
+
+title = "SURVIVE: Zombie Base"
+
+for ch in title:
+    print(ch, end="", flush=True)
+    time.sleep(0.15)
+
+time.sleep(1)
+print("\n몰려오는 좀비를 막아내고 기지를 지켜내십시오.")
+
