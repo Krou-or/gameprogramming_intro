@@ -1,0 +1,157 @@
+import random
+
+print("===== ZOMBIE BASE =====")
+print("좀비 생존 기지 운영 게임")
+
+# 플레이어 정보
+player_name = input("플레이어 이름 입력 : ")
+
+# 기본 변수
+day = 1
+stage = 1
+energy = 3
+
+hp = 100
+food = 30
+defense = 20
+score = 0
+
+# 힌트/아이템
+hint_list = []
+item_list = []
+
+# 보스
+boss_hp = 100
+
+while hp > 0:
+
+    print("\n===================")
+    print("Day :", day)
+    print("Stage :", stage)
+    print("체력 :", hp)
+    print("식량 :", food)
+    print("방어력 :", defense)
+    print("에너지 :", energy)
+    print("===================")
+
+    if energy <= 0:
+        print("하루 종료")
+        day += 1
+        energy = 3
+        continue
+
+    print("\n1. 식량 탐색 (에너지1)")
+    print("2. 기지 강화 (에너지2)")
+    print("3. 휴식 (에너지1)")
+    print("4. 전투 (에너지2)")
+    print("5. 종료")
+
+    choice = input("선택 : ")
+
+    # 식량 탐색
+    if choice == "1":
+
+        energy -= 1
+
+        gain = random.randint(3,10)
+
+        food += gain
+
+        print("식량 +",gain)
+
+        # 부상 확률
+        if random.randint(1,100)<=30:
+            hp -= 10
+            print("탐색 중 부상!")
+            print("체력 -10")
+
+
+    # 기지 강화
+    elif choice=="2":
+
+        if energy>=2:
+
+            energy-=2
+            defense+=10
+            food-=5
+
+            print("기지 강화 성공")
+            print("방어력 +10")
+            print("식량 -5")
+
+        else:
+            print("에너지 부족")
+
+
+    # 휴식
+    elif choice=="3":
+
+        energy-=1
+        hp+=15
+
+        if hp>100:
+            hp=100
+
+        print("휴식 완료")
+        print("체력 회복")
+
+
+    # 전투
+    elif choice=="4":
+
+        if energy>=2:
+
+            energy-=2
+
+            damage=random.randint(5,25)
+
+            hp-=damage
+            score+=20
+
+            print("좀비 처치")
+            print("점수 +20")
+            print("체력 -",damage)
+
+            # 랜덤 이벤트
+
+            event=random.randint(1,4)
+
+            if event==1:
+                food+=5
+                print("이벤트: 식량 발견 +5")
+
+            elif event==2:
+                defense-=10
+                print("이벤트: 좀비 습격")
+                print("방어력 -10")
+
+            elif event==3:
+                hp-=15
+                print("이벤트: 부상")
+                print("체력 -15")
+
+            elif event==4:
+                hint_list.append("보스 약점")
+                print("생존자 구조")
+                print("힌트 획득")
+
+        else:
+            print("에너지 부족")
+
+    elif choice=="5":
+        print("게임 종료")
+        break
+
+    # 패배 조건
+
+    if hp<=0:
+        print("GAME OVER")
+        break
+
+    if food<=0:
+        print("굶어 죽었습니다")
+        break
+
+    if defense<=0:
+        print("기지가 무너졌습니다")
+        break
