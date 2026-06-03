@@ -197,7 +197,6 @@ for attack in range(3):
 
     for target in targets:
 
-        # 각각의 공격마다 피해량 랜덤 결정
         if defense < 20:
             damage = random.randint(4, 15)
 
