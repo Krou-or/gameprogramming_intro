@@ -169,7 +169,6 @@ while day < 10:
 clear()
 
 print("WARNING")
-
 print()
 print('최종 감염체 "ZOMBIE LORD"가 기지에 접근 중입니다.')
 print()
@@ -191,21 +190,22 @@ for attack in range(3):
     time.sleep(1)
 
     targets = random.sample(
-    ["base", "hp", "food", "defense"], 2
-)
+        ["base", "hp", "food", "defense"], 2
+    )
 
-print("\n[ ZOMBIE LORD ATTACK ]\n")
+    print("\n[ ZOMBIE LORD ATTACK ]\n")
 
-for target in targets:
+    for target in targets:
 
-    if defense < 20:
-        damage = random.randint(4, 15)
+        # 각각의 공격마다 피해량 랜덤 결정
+        if defense < 20:
+            damage = random.randint(4, 15)
 
-    elif defense < 50:
-        damage = random.randint(3, 13)
+        elif defense < 50:
+            damage = random.randint(3, 13)
 
-    else:
-        damage = random.randint(0, 10)
+        else:
+            damage = random.randint(0, 10)
 
         if target == "base":
             actual = min(base, damage)
@@ -234,7 +234,6 @@ for target in targets:
     if attack < 2:
         print("\nZOMBIE LORD가 다음 공격을 준비합니다...")
         input("계속하려면 ENTER...")
-        
 
 clear()
 
