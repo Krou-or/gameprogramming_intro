@@ -1,0 +1,247 @@
+import random
+import time
+import os
+
+random.seed(time.time())
+
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
+
+def get_defense_level():
+    if defense <= 20:
+        return "1레벨"
+    elif defense <= 49:
+        return "2레벨"
+    else:
+        return "3레벨"
+
+def show_status():
+    print("====================")
+    print(f"DAY : {day} / 10")
+    print("====================")
+    print(f"기지 내구도 : {base}")
+    print(f"체력        : {hp}")
+    print(f"식량        : {food}")
+    print(f"방어력      : {defense} ({get_defense_level()})")
+    print("====================")
+
+def game_over(message):
+    clear()
+    print("SURVIVAL FAILED")
+    print(message)
+    exit()
+
+def check_game_over():
+    if base <= 0:
+        game_over(
+            "기지가 완전히 붕괴되었습니다.\n"
+            "더 이상 좀비들의 공격을 막아낼 수 없습니다."
+        )
+
+    if hp <= 0:
+        game_over(
+            "치명상을 입었습니다.\n"
+            "당신은 생존하지 못했습니다."
+        )
+
+    if food <= 0:
+        game_over(
+            "식량이 모두 바닥났습니다.\n"
+            "굶주림 속에서 더 이상 생존할 수 없었습니다."
+        )
+
+clear()
+
+print("""
+SURVIVE: Zombie Base
+
+우리가 가진 것은
+낡은 기지와 약간의 식량뿐.
+
+10일 후,
+거대한 좀비 무리가 도착한다.
+
+그날까지 살아남고
+방어력을 높여 "ZOMBE LORD"와의 전투에 대비하라.
+""")
+
+input("[ENTER] 시작하기")
+
+base = random.randint(15, 25)
+hp = random.randint(15, 25)
+food = random.randint(15, 25)
+defense = random.randint(15, 25)
+
+day = 1
+
+while day < 10:
+
+    clear()
+    show_status()
+
+    print("무엇을 하시겠습니까?\n")
+    print("1. 식량 탐색")
+    print("2. 기지 강화")
+    print("3. 휴식")
+    print("4. 전투")
+
+    choice = input("\n선택 : ")
+
+    if choice == "1":
+        gain = random.randint(7, 25)
+        food += gain
+        print(f"\n식량 {gain} 획득!")
+
+    elif choice == "2":
+        gain = random.randint(7, 25)
+        base += gain
+        print(f"\n기지 내구도 {gain} 증가!")
+
+    elif choice == "3":
+        gain = random.randint(7, 25)
+        hp += gain
+        print(f"\n체력 {gain} 회복!")
+
+    elif choice == "4":
+        gain = random.randint(7, 25)
+        defense += gain
+        print(f"\n방어력 {gain} 증가!")
+
+    else:
+        print("\n잘못된 입력입니다.")
+        time.sleep(1)
+        continue
+
+    time.sleep(1)
+
+    clear()
+
+    print(f"DAY {day} 종료...")
+    time.sleep(1)
+
+    event = random.randint(1, 4)
+
+    if event == 1:
+        damage = random.randint(8, 20)
+
+        print("\n[공격 발생]")
+        print("좀비 무리가 기지를 공격했습니다!")
+
+        base = max(0, base - damage)
+
+        print(f"기지가 {damage}의 피해를 입었습니다.")
+
+    elif event == 2:
+        damage = random.randint(8, 20)
+
+        print("\n[식량 창고 파손]")
+        print("좀비가 식량 창고에 침입했습니다!")
+
+        food = max(0, food - damage)
+
+        print(f"식량 {damage}를 잃었습니다.")
+
+    elif event == 3:
+        damage = random.randint(8, 20)
+
+        print("\n[방어 시설 붕괴]")
+        print("노후화된 방어 시설이 무너졌습니다!")
+
+        defense = max(0, defense - damage)
+
+        print(f"방어력이 {damage} 감소하였습니다.")
+
+    elif event == 4:
+        damage = random.randint(8, 20)
+
+        print("\n[기지 화재]")
+        print("합선으로 인해 기지 일부에 불이 났습니다!")
+
+        base = max(0, base - damage)
+
+        print(f"기지 내구도가 {damage} 감소하였습니다.")
+
+    check_game_over()
+
+    input("\n계속하려면 ENTER...")
+    day += 1
+
+clear()
+
+print("WARNING")
+
+print()
+print('최종 감염체 "ZOMBIE LORD"가 기지에 접근 중입니다.')
+print()
+
+input("전투를 시작하려면 [ENTER] ")
+
+for attack in range(3):
+
+    clear()
+
+    print(f"===== ZOMBIE LORD 공격 {attack + 1}/3 =====")
+    print("====================")
+    print(f"기지 내구도 : {base}")
+    print(f"체력        : {hp}")
+    print(f"식량        : {food}")
+    print(f"방어력      : {defense} ({get_defense_level()})")
+    print("====================")
+
+    time.sleep(1)
+
+    if defense < 20:
+        damage = random.randint(4, 15)
+
+    elif defense < 50:
+        damage = random.randint(3, 13)
+
+    else:
+        damage = random.randint(0, 10)
+
+    targets = random.sample(
+        ["base", "hp", "food", "defense"], 2
+    )
+
+    print("\n[ ZOMBIE LORD ATTACK ]\n")
+
+    for target in targets:
+
+        if target == "base":
+            actual = min(base, damage)
+            base = max(0, base - damage)
+            print(f"[LOG] 기지 내구도 -{actual}")
+
+        elif target == "hp":
+            actual = min(hp, damage)
+            hp = max(0, hp - damage)
+            print(f"[LOG] 체력 -{actual}")
+
+        elif target == "food":
+            actual = min(food, damage)
+            food = max(0, food - damage)
+            print(f"[LOG] 식량 -{actual}")
+
+        elif target == "defense":
+            actual = min(defense, damage)
+            defense = max(0, defense - damage)
+            print(f"[LOG] 방어력 -{actual}")
+
+        time.sleep(0.7)
+
+    check_game_over()
+
+    if attack < 2:
+        print("\nZOMBIE LORD가 다음 공격을 준비합니다...")
+        input("계속하려면 ENTER...")
+        
+
+clear()
+
+print("""
+SURVIVE COMPLETE
+
+Day 10을 버텨냈습니다.
+
+Zombie Base는 무너지지 않았습니다.
+""")
