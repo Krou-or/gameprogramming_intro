@@ -1,11 +1,72 @@
-import time
+# -----------------------------
+# DAY 10 보스전
+# -----------------------------
+clear()
 
-title = "SURVIVE: Zombie Base"
+type_text("WARNING", 0.15)
 
-for ch in title:
-    print(ch, end="", flush=True)
-    time.sleep(0.15)
+print()
+print('최종 감염체 "ZOMBIE LORD"가 기지에 접근 중입니다.')
+print()
 
-time.sleep(1)
-print("\n몰려오는 좀비를 막아내고 기지를 지켜내십시오.")
+input("전투를 시작하려면 [ENTER] ")
 
+for attack in range(3):
+
+    clear()
+
+    print(f"===== ZOMBIE LORD 공격 {attack + 1}/3 =====")
+    print("====================")
+    print(f"기지 내구도 : {base}")
+    print(f"체력        : {hp}")
+    print(f"식량        : {food}")
+    print(f"방어력      : {defense} ({get_defense_level()})")
+    print("====================")
+
+    time.sleep(1)
+
+    # 방어력에 따른 피해량
+    if defense < 20:
+        damage = random.randint(10, 20)
+
+    elif defense < 50:
+        damage = random.randint(7, 18)
+
+    else:
+        damage = random.randint(1, 15)
+
+    targets = random.sample(
+        ["base", "hp", "food", "defense"], 2
+    )
+
+    print("\n[ ZOMBIE LORD ATTACK ]\n")
+
+    for target in targets:
+
+        if target == "base":
+            actual = min(base, damage)
+            base = clamp(base - damage)
+            print(f"[LOG] 기지 내구도 -{actual}")
+
+        elif target == "hp":
+            actual = min(hp, damage)
+            hp = clamp(hp - damage)
+            print(f"[LOG] 체력 -{actual}")
+
+        elif target == "food":
+            actual = min(food, damage)
+            food = clamp(food - damage)
+            print(f"[LOG] 식량 -{actual}")
+
+        elif target == "defense":
+            actual = min(defense, damage)
+            defense = clamp(defense - damage)
+            print(f"[LOG] 방어력 -{actual}")
+
+        time.sleep(0.7)
+
+    check_game_over()
+
+    if attack < 2:
+        print("\nZOMBIE LORD가 다음 공격을 준비합니다...")
+        input("계속하려면 ENTER...")
