@@ -18,12 +18,6 @@ def get_defense_level():
         return "2레벨"
     else:
         return "3레벨"
-        
-def type_text(text, speed=0.08):
-    for ch in text:
-        print(ch, end="", flush=True)
-        time.sleep(speed)
-    print()
 
 def show_status():
     print("====================")
@@ -210,7 +204,7 @@ while day < 10:
 # -----------------------------
 clear()
 
-type_text("WARNING", 0.15)
+print("WARNING")
 
 print()
 print('최종 감염체 "ZOMBIE LORD"가 기지에 접근 중입니다.')
@@ -287,5 +281,6 @@ print("""
 SURVIVE COMPLETE
 
 Day 10을 버텨냈습니다.
+
 Zombie Base는 무너지지 않았습니다.
 """)
